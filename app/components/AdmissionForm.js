@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-export default function AdmissionForm({ collegeName }: { collegeName: string }) {
+export default function AdmissionForm({ collegeName }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
