@@ -1,154 +1,213 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function BiharCreditCard() {
-  const [activeTab, setActiveTab] = useState("overview");
+export default function BiharCreditCardPage() {
+  const [colleges, setColleges] = useState([]);
+  const [filteredColleges, setFilteredColleges] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [showColleges, setShowColleges] = useState(false);
+  const [states, setStates] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/bihar-eligible-colleges")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setColleges(data);
+          setFilteredColleges(data);
+          const uniqueStates = [...new Set(data.map((c) => c.State).filter(Boolean))].sort();
+          setStates(uniqueStates);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    let filtered = colleges;
+    if (searchTerm) {
+      filtered = filtered.filter((c) => 
+        c["College Name"].toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    if (selectedState) {
+      filtered = filtered.filter((c) => c.State === selectedState);
+    }
+    if (selectedType) {
+      filtered = filtered.filter((c) => c.college_type === selectedType);
+    }
+    setFilteredColleges(filtered);
+  }, [searchTerm, selectedState, selectedType, colleges]);
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedState("");
+    setSelectedType("");
+  };
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
-      {/* Hero Section */}
-      <div style={{ textAlign: "center", marginBottom: "40px" }}>
-        <h1 style={{ fontSize: "42px", color: "#1a1a2e", marginBottom: "15px" }}>🎓 Bihar Student Credit Card</h1>
-        <p style={{ fontSize: "18px", color: "#333", maxWidth: "700px", margin: "0 auto" }}>
-          Complete Guide - Loan up to ₹4 Lakhs at 0% Interest | Government of Bihar Scheme
-        </p>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+      <Link href="/" style={{ color: "#3b82f6", textDecoration: "none", display: "inline-block", marginBottom: "20px" }}>← Back to Home</Link>
+
+      <h1 style={{ fontSize: "32px", color: "#1e3a8a", marginTop: "20px" }}>Bihar Student Credit Card Scheme</h1>
+
+      {/* Section 1: Scheme Overview */}
+      <div style={{ background: "#eff6ff", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>1. Scheme Overview</h2>
+        <ul>
+          <li>Loan Amount: Up to ₹4 lakhs</li>
+          <li>Interest Rate: 0% (Government subsidized)</li>
+          <li>No Collateral Required</li>
+          <li>No Processing Fee</li>
+          <li>Repayment after course completion + 1 year</li>
+        </ul>
       </div>
 
-      {/* Tabs - Blue Color */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center", marginBottom: "30px" }}>
-        <button onClick={() => setActiveTab("overview")} style={{ padding: "10px 20px", background: activeTab === "overview" ? "#3b82f6" : "white", color: activeTab === "overview" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Overview</button>
-        <button onClick={() => setActiveTab("courses")} style={{ padding: "10px 20px", background: activeTab === "courses" ? "#3b82f6" : "white", color: activeTab === "courses" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Eligible Courses</button>
-        <button onClick={() => setActiveTab("documents")} style={{ padding: "10px 20px", background: activeTab === "documents" ? "#3b82f6" : "white", color: activeTab === "documents" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Documents Required</button>
-        <button onClick={() => setActiveTab("process")} style={{ padding: "10px 20px", background: activeTab === "process" ? "#3b82f6" : "white", color: activeTab === "process" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Application Process</button>
-        <button onClick={() => setActiveTab("fee")} style={{ padding: "10px 20px", background: activeTab === "fee" ? "#3b82f6" : "white", color: activeTab === "fee" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Fee Details</button>
-        <button onClick={() => setActiveTab("colleges")} style={{ padding: "10px 20px", background: activeTab === "colleges" ? "#3b82f6" : "white", color: activeTab === "colleges" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Eligible Colleges</button>
-        <button onClick={() => setActiveTab("faq")} style={{ padding: "10px 20px", background: activeTab === "faq" ? "#3b82f6" : "white", color: activeTab === "faq" ? "white" : "#3b82f6", border: "1px solid #3b82f6", borderRadius: "25px", cursor: "pointer", fontWeight: "bold" }}>Frequently Q&A</button>
+      {/* Section 2: How 0% Interest Works */}
+      <div style={{ background: "#dcfce7", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>2. How 0% Interest Works</h2>
+        <p><strong>Example:</strong> You take ₹3,00,000 loan for 4-year B.Tech</p>
+        <ul>
+          <li>You repay only ₹3,00,000 (No interest)</li>
+          <li>Government pays interest to bank</li>
+          <li>No EMI during course + 1 year after completion</li>
+          <li>After holiday, repay in 7 years (approx ₹3,571/month)</li>
+        </ul>
       </div>
 
-      {/* Overview Tab */}
-      {activeTab === "overview" && (
-        <div style={{ background: "#eff6ff", padding: "30px", borderRadius: "20px" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "15px", color: "#1a1a2e" }}>📋 Scheme Overview</h2>
-          <p style={{ color: "#333", lineHeight: "1.6" }}>The Bihar Student Credit Card Scheme provides financial assistance to students for higher education. Loan up to ₹4,00,000 at 0% interest. No collateral required.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "15px", marginTop: "20px" }}>
-            <div style={{ background: "white", padding: "15px", borderRadius: "10px", textAlign: "center" }}><div style={{ fontSize: "30px" }}>💰</div><h3 style={{ color: "#333" }}>Up to ₹4 Lakhs</h3></div>
-            <div style={{ background: "white", padding: "15px", borderRadius: "10px", textAlign: "center" }}><div style={{ fontSize: "30px" }}>📉</div><h3 style={{ color: "#333" }}>0% Interest</h3></div>
-            <div style={{ background: "white", padding: "15px", borderRadius: "10px", textAlign: "center" }}><div style={{ fontSize: "30px" }}>🛡️</div><h3 style={{ color: "#333" }}>No Collateral</h3></div>
-            <div style={{ background: "white", padding: "15px", borderRadius: "10px", textAlign: "center" }}><div style={{ fontSize: "30px" }}>⏰</div><h3 style={{ color: "#333" }}>Course + 1 Year</h3></div>
+      {/* Section 3: Category-wise Eligibility */}
+      <div style={{ background: "white", border: "1px solid #ccc", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>3. Category-wise Eligibility</h2>
+        <p><strong>General:</strong> 50% marks, No income limit, Age 18-25</p>
+        <p><strong>OBC:</strong> 45% marks, Income less than ₹3 lakhs, Age 18-25</p>
+        <p><strong>SC/ST:</strong> 40% marks, Income less than ₹3 lakhs, Age 18-25</p>
+        <p><strong>EWS:</strong> 50% marks, Income less than ₹3 lakhs, Age 18-25</p>
+        <p><strong>Girls:</strong> 5% relaxation in marks, Age 18-25</p>
+      </div>
+
+      {/* Section 4: Academic Fee Breakdown */}
+      <div style={{ background: "#fef3c7", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>4. How Academic Fee is Calculated</h2>
+        <p><strong>Example:</strong> College academic fee = ₹3,00,000 per year</p>
+        <ul>
+          <li>Academic Fee: ₹3,00,000 (paid directly to college)</li>
+          <li>Laptop/Books: Up to ₹50,000</li>
+          <li>Hostel/Mess: Up to ₹60,000</li>
+          <li>Travel/Other: Up to ₹30,000</li>
+          <li>Total Eligible: ₹4,40,000 → Limited to ₹4,00,000</li>
+        </ul>
+      </div>
+
+      {/* Section 5: Documents Required */}
+      <div style={{ background: "white", border: "1px solid #ccc", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>5. Documents Required</h2>
+        <p><strong>Common for All:</strong> Bihar Domicile, 10th & 12th Marksheets, Admission Letter, Aadhar Card, Photos, Bank Passbook</p>
+        <p><strong>General:</strong> Income Certificate (for EWS)</p>
+        <p><strong>OBC:</strong> OBC Non-Creamy Layer Certificate</p>
+        <p><strong>SC/ST:</strong> Caste Certificate</p>
+        <p><strong>EWS:</strong> EWS Certificate, Income Certificate</p>
+        <p><strong>Girls:</strong> Birth Certificate, Parent Consent Letter</p>
+      </div>
+
+      {/* Section 6: Repayment Terms */}
+      <div style={{ background: "#f0fdf4", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>6. Repayment Terms</h2>
+        <p><strong>Example:</strong> ₹3,00,000 loan for 4-year B.Tech</p>
+        <ul>
+          <li>Course Duration: 4 years → No EMI</li>
+          <li>Moratorium: +1 year after course → No EMI</li>
+          <li>Total Holiday: 5 years</li>
+          <li>Repayment Period: 7 years after holiday</li>
+          <li>Monthly EMI after 5 years: approx ₹3,571</li>
+        </ul>
+      </div>
+
+      {/* Section 7: How to Apply */}
+      <div style={{ background: "#f3f4f6", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <h2 style={{ color: "#1e3a8a" }}>7. How to Apply</h2>
+        <ol>
+          <li>Visit <a href="https://biharcreditcard.in" target="_blank" style={{ color: "#3b82f6" }}>biharcreditcard.in</a></li>
+          <li>Register with mobile number and email</li>
+          <li>Fill application form</li>
+          <li>Upload documents</li>
+          <li>Submit and get application number</li>
+          <li>Track status online</li>
+        </ol>
+      </div>
+
+      {/* Section 8: Eligible Colleges List */}
+      <div style={{ background: "#f0fdf4", padding: "20px", borderRadius: "12px", marginTop: "20px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+          <h2 style={{ color: "#1e3a8a" }}>8. Eligible Colleges Across India ({filteredColleges.length})</h2>
+          <button onClick={() => setShowColleges(!showColleges)} style={{ padding: "8px 16px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>
+            {showColleges ? "Hide" : "Show Colleges"}
+          </button>
+        </div>
+
+        {showColleges && (
+          <div style={{ marginTop: "15px" }}>
+            {loading ? (
+              <p>Loading colleges...</p>
+            ) : (
+              <>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
+                  <input type="text" placeholder="Search college..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px", flex: 1 }} />
+                  <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }}>
+                    <option value="">All States ({states.length})</option>
+                    {states.map((s) => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }}>
+                    <option value="">All Types</option>
+                    <option value="Government">Government</option>
+                    <option value="Private">Private</option>
+                  </select>
+                  <button onClick={clearFilters} style={{ padding: "8px 16px", background: "#6b7280", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>Clear</button>
+                </div>
+
+                {filteredColleges.length === 0 ? (
+                  <p>No colleges found.</p>
+                ) : (
+                  <>
+                    {filteredColleges.map((college, idx) => (
+                      <div key={college.id} style={{ borderBottom: "1px solid #ddd", padding: "10px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+                        <div>
+                          <strong>{idx + 1}. {college["College Name"]}</strong>
+                          <span style={{ marginLeft: "10px", fontSize: "12px", color: "#666" }}>({college.State || "N/A"})</span>
+                          <span style={{ marginLeft: "10px", background: college.college_type === "Government" ? "#dcfce7" : "#fef3c7", padding: "2px 8px", borderRadius: "12px", fontSize: "12px" }}>
+                            {college.college_type || "Private"}
+                          </span>
+                        </div>
+                        <a href={`/bihar-college/${college.slug}`} style={{ color: "#3b82f6" }}>View Details →</a>
+                      </div>
+                    ))}
+                    <p style={{ fontSize: "12px", marginTop: "10px" }}>Showing {filteredColleges.length} of {colleges.length} colleges</p>
+                  </>
+                )}
+              </>
+            )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Eligible Courses Tab */}
-      {activeTab === "courses" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>📚 Eligible Courses</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }}>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Engineering - B.Tech, M.Tech</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Medical - MBBS, BDS, BAMS</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Management - BBA, MBA, B.Com</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Computer - BCA, MCA, B.Sc IT</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Law - LLB, BA LLB, LLM</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Agriculture - B.Sc Agri, M.Sc Agri</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Pharmacy - B.Pharm, M.Pharm</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Design - B.Des, M.Des, B.Arch</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Science - B.Sc, M.Sc</div>
-            <div><span style={{ color: "#3b82f6" }}>✅</span> Arts - BA, MA</div>
-          </div>
-          <p style={{ marginTop: "20px", background: "#fef3c7", padding: "12px", borderRadius: "10px", color: "#92400e" }}>✅ Any professional/technical course of minimum 1 year duration from a recognized institution is eligible.</p>
-        </div>
-      )}
-
-      {/* Documents Tab */}
-      {activeTab === "documents" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>📄 Documents Required</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "15px" }}>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Domicile Certificate (Bihar)</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> 10th & 12th Mark Sheets</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> College Admission Letter</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Aadhar Card</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Income Certificate</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Caste Certificate (if applicable)</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Passport Size Photos (4-6)</div>
-            <div><span style={{ color: "#3b82f6" }}>📎</span> Bank Account Details</div>
-          </div>
-          <p style={{ marginTop: "20px", background: "#fef3c7", padding: "12px", borderRadius: "10px", color: "#92400e" }}>⚠️ All documents must be self-attested. Original documents required for verification.</p>
-        </div>
-      )}
-
-      {/* Application Process Tab */}
-      {activeTab === "process" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>📝 Application Process</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-            <div><strong style={{ color: "#3b82f6" }}>Step 1:</strong> Fill online application at <a href="https://biharcreditcard.in" target="_blank" style={{ color: "#3b82f6" }}>biharcreditcard.in</a></div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 2:</strong> Upload documents & submit</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 3:</strong> Receive approval email</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 4:</strong> Receive agreement details</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 5:</strong> Visit bank with parents (co-applicant)</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 6:</strong> Sign agreement & get receipt</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 7:</strong> Amount transferred to college after 90 days</div>
-            <div><strong style={{ color: "#3b82f6" }}>Step 8:</strong> Annual renewal with result, bonafide certificate & signed form</div>
-          </div>
-        </div>
-      )}
-
-      {/* Fee Details Tab */}
-      {activeTab === "fee" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>💰 Fee & Loan Details</h2>
-          <div style={{ background: "#eff6ff", padding: "15px", borderRadius: "10px", marginBottom: "20px" }}>
-            <h3 style={{ color: "#3b82f6" }}>Maximum Loan Amount: ₹4,00,000</h3>
-          </div>
-          <div style={{ marginBottom: "15px" }}><strong>Example 1:</strong> College fee ₹5L → Loan ₹4L, You pay ₹1L</div>
-          <div style={{ marginBottom: "15px" }}><strong>Example 2:</strong> Academic ₹3L + Hostel ₹1L → Total ₹4L → Full loan coverage</div>
-          <div style={{ marginBottom: "15px" }}><strong>Example 3:</strong> Academic ₹3L (No hostel) → ₹3L to college, ₹1L to your account for laptop/books</div>
-          <p style={{ marginTop: "15px", background: "#eff6ff", padding: "12px", borderRadius: "10px" }}>📌 Loan transferred in multiple installments as per semester/year. Annual renewal required with result & bonafide certificate.</p>
-        </div>
-      )}
-
-      {/* Eligible Colleges Tab */}
-      {activeTab === "colleges" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>🏛️ Eligible Colleges in Bihar</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "10px" }}>
-            <div>🏫 IIT Patna, NIT Patna, AIIMS Patna</div>
-            <div>🏫 Patna University, Nalanda Medical College</div>
-            <div>🏫 Chanakya National Law University</div>
-            <div>🏫 Chandragupta Institute of Management</div>
-            <div>🏫 Magadh University (Gaya), BRA Bihar University (Muzaffarpur)</div>
-            <div>🏫 L.N. Mithila University (Darbhanga)</div>
-            <div>🏫 T.M. Bhagalpur University (Bhagalpur)</div>
-            <div>🏫 Purnea University, Munger University</div>
-            <div>🏫 Muzaffarpur Institute of Technology</div>
-            <div>🏫 Bhagalpur College of Engineering</div>
-            <div>🏫 Bihar Agricultural University</div>
-          </div>
-          <p style={{ marginTop: "20px", background: "#f8f9fa", padding: "12px", borderRadius: "10px", textAlign: "center" }}>*500+ colleges in Bihar are eligible. For complete list, visit official website.</p>
-        </div>
-      )}
-
-      {/* FAQ Tab */}
-      {activeTab === "faq" && (
-        <div style={{ background: "white", padding: "30px", borderRadius: "20px", border: "1px solid #eee" }}>
-          <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#1a1a2e" }}>❓ Frequently Asked Questions</h2>
-          <div style={{ marginBottom: "15px", paddingBottom: "10px", borderBottom: "1px solid #eee" }}><strong style={{ color: "#3b82f6" }}>How much loan can I get?</strong> <span style={{ color: "#333" }}>Up to ₹4,00,000</span></div>
-          <div style={{ marginBottom: "15px", paddingBottom: "10px", borderBottom: "1px solid #eee" }}><strong style={{ color: "#3b82f6" }}>What is the interest rate?</strong> <span style={{ color: "#333" }}>0% per annum</span></div>
-          <div style={{ marginBottom: "15px", paddingBottom: "10px", borderBottom: "1px solid #eee" }}><strong style={{ color: "#3b82f6" }}>Do I need collateral?</strong> <span style={{ color: "#333" }}>No, no collateral required</span></div>
-          <div style={{ marginBottom: "15px", paddingBottom: "10px", borderBottom: "1px solid #eee" }}><strong style={{ color: "#3b82f6" }}>When do I start repayment?</strong> <span style={{ color: "#333" }}>After course completion + 1 year</span></div>
-          <div style={{ marginBottom: "15px", paddingBottom: "10px", borderBottom: "1px solid #eee" }}><strong style={{ color: "#3b82f6" }}>Can I check my application status?</strong> <span style={{ color: "#333" }}>Yes, track at biharcreditcard.in</span></div>
-          <div><strong style={{ color: "#3b82f6" }}>What if I fail in exam?</strong> <span style={{ color: "#333" }}>Must pass each year to get next installment</span></div>
-        </div>
-      )}
-
-      {/* Footer */}
-      <div style={{ marginTop: "40px", textAlign: "center", padding: "20px", background: "#f8f9fa", borderRadius: "12px" }}>
-        <p style={{ color: "#666" }}>📌 Official Website: <a href="https://biharcreditcard.in" target="_blank" style={{ color: "#3b82f6" }}>biharcreditcard.in</a></p>
-        <p style={{ color: "#666" }}>📞 Helpline: 1800-123-4567 (Toll Free, 10 AM - 6 PM)</p>
-        <p style={{ color: "#666" }}>📧 Email: support@biharcreditcard.in</p>
+      {/* Section 9: Need Help */}
+      <div style={{ background: "#1e3a8a", padding: "20px", borderRadius: "12px", marginTop: "20px", textAlign: "center", color: "white" }}>
+        <h2 style={{ color: "white" }}>9. Need Help?</h2>
+        <p>Helpline: 1800-123-4567 (Toll Free)</p>
+        <p>WhatsApp: +91-8926078461</p>
+        <p>Email: support@biharcreditcard.in</p>
+        <Link href="/colleges">
+          <button style={{ marginTop: "10px", padding: "10px 20px", background: "white", color: "#1e3a8a", border: "none", borderRadius: "8px", cursor: "pointer" }}>
+            Explore All Colleges →
+          </button>
+        </Link>
       </div>
     </div>
   );

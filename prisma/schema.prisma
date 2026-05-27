@@ -1,42 +1,62 @@
-generator client { 
-  provider = "prisma-client-js" 
-} 
- 
-datasource db { 
-  provider = "postgresql" 
-} 
- 
-model College { 
-  id           String   @id @default(cuid()) 
-  name         String 
-  slug         String   @unique 
-  stream       String 
-  state        String 
-  city         String 
-  type         String 
-  fees_ug_inr  Int? 
-  about        String? 
-  createdAt    DateTime @default(now()) 
-  updatedAt    DateTime @updatedAt 
-  courses      Course[] 
-} 
- 
-model Course { 
-  id        String   @id @default(cuid()) 
-  collegeId String 
-  name      String 
-  duration  String? 
-  fees      Int? 
-  createdAt DateTime @default(now()) 
-  updatedAt DateTime @updatedAt 
-  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade) 
-} 
- 
-model Lead { 
-  id        String   @id @default(cuid()) 
-  name      String 
-  phone     String 
-  stream    String? 
-  message   String? 
-  createdAt DateTime @default(now()) 
-} 
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model College {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  stream String
+  state String
+  city String
+  type String
+  fees_ug_inr Int?
+  about String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  courses Course[]
+}
+
+model Course {
+  id String @id @default(cuid())
+  collegeId String
+  name String
+  duration String?
+  fees Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  college College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+}
+
+model Lead {
+  id String @id @default(cuid())
+  name String
+  phone String
+  stream String?
+  message String?
+  createdAt DateTime @default(now())
+}
+
+model BiharCreditCardCollege {
+  id                     String   @id @default(cuid())
+  CollegeCode            String?
+  CollegeName            String?
+  University             String?
+  State                  String?
+  DistrictName           String?
+  Pincode                String?
+  InstituteEmail         String?
+  InstituteType          String?
+  AccreditationType      String?
+  AccreditationValidUpto String?
+  Status                 String?
+  slug                   String?  @unique
+  college_type           String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}

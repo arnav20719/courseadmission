@@ -306,57 +306,6 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div style={{ background: "#1a1a2e", color: "#ccc", padding: "50px 20px 30px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px", marginBottom: "40px" }}>
-            
-            <div>
-              <h3 style={{ color: "#ff6b35", marginBottom: "15px" }}>Resources</h3>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}><Link href="/careers-after-12th" style={{ color: "#ccc", textDecoration: "none" }}>Careers after 12th</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/courses-after-12th" style={{ color: "#ccc", textDecoration: "none" }}>Courses After 12th</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/ask-question" style={{ color: "#ccc", textDecoration: "none" }}>Ask a Question</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/write-review" style={{ color: "#ccc", textDecoration: "none" }}>Write a college review</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 style={{ color: "#ff6b35", marginBottom: "15px" }}>Important Updates</h3>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}><Link href="/neet-2026" style={{ color: "#ccc", textDecoration: "none" }}>NEET 2026</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/cat-2026" style={{ color: "#ccc", textDecoration: "none" }}>CAT 2026</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/jee-main-2026" style={{ color: "#ccc", textDecoration: "none" }}>JEE Main 2026</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/bitsat-2026" style={{ color: "#ccc", textDecoration: "none" }}>BITSAT 2026</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 style={{ color: "#ff6b35", marginBottom: "15px" }}>Bihar Credit Card</h3>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}><Link href="/bihar-credit-card" style={{ color: "#ccc", textDecoration: "none" }}>Scheme Details</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/bihar-credit-card" style={{ color: "#ccc", textDecoration: "none" }}>Eligibility</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/bihar-credit-card" style={{ color: "#ccc", textDecoration: "none" }}>Apply Online</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/bihar-credit-card" style={{ color: "#ccc", textDecoration: "none" }}>Documents Required</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 style={{ color: "#ff6b35", marginBottom: "15px" }}>About Us</h3>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}><Link href="/about-us" style={{ color: "#ccc", textDecoration: "none" }}>About Us</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/contact-us" style={{ color: "#ccc", textDecoration: "none" }}>Contact Us</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/privacy-policy" style={{ color: "#ccc", textDecoration: "none" }}>Privacy Policy</Link></li>
-                <li style={{ marginBottom: "8px" }}><Link href="/terms-of-use" style={{ color: "#ccc", textDecoration: "none" }}>Terms of Use</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ borderTop: "1px solid #333", paddingTop: "20px", textAlign: "center", fontSize: "12px" }}>
-            <p>© 2026 CourseAdmission - RG ARNAV EDU CONSULTANCY. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
