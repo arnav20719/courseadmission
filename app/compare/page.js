@@ -8,19 +8,31 @@ export default function ComparePage() {
   const [selectedColleges, setSelectedColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+
+  const fetchColleges = async (page = 1) => {
+    setLoading(true);
+    const params = new URLSearchParams({
+      page,
+      limit: 50,
+      ...(searchTerm && { search: searchTerm }),
+    });
+    
+    try {
+      const res = await fetch(`/api/colleges?${params}`);
+      const data = await res.json();
+      setColleges(data.colleges || []);
+      setPagination(data.pagination || { page: 1, totalPages: 1, total: 0 });
+    } catch (err) {
+      console.error("Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/colleges")
-      .then((res) => res.json())
-      .then((data) => {
-        setColleges(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setLoading(false);
-      });
-  }, []);
+    fetchColleges(1);
+  }, [searchTerm]);
 
   const addToCompare = (college) => {
     if (selectedColleges.length >= 3) {
@@ -44,7 +56,7 @@ export default function ComparePage() {
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
+  if (loading && colleges.length === 0) {
     return (
       <div style={{ padding: "40px", textAlign: "center", color: "black" }}>
         Loading colleges...
@@ -159,8 +171,17 @@ export default function ComparePage() {
           })}
         </div>
 
-        {filteredColleges.length === 0 && (
+        {filteredColleges.length === 0 && !loading && (
           <p style={{ textAlign: "center", marginTop: "40px", color: "#4b5563" }}>No colleges found matching your search.</p>
+        )}
+
+        {/* Pagination */}
+        {pagination.totalPages > 1 && (
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "30px" }}>
+            <button onClick={() => fetchColleges(pagination.page - 1)} disabled={pagination.page === 1} style={{ padding: "8px 16px", background: pagination.page === 1 ? "#ccc" : "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>← Previous</button>
+            <span style={{ padding: "8px 16px", background: "#1e3a8a", color: "white", borderRadius: "8px" }}>Page {pagination.page} of {pagination.totalPages}</span>
+            <button onClick={() => fetchColleges(pagination.page + 1)} disabled={pagination.page === pagination.totalPages} style={{ padding: "8px 16px", background: pagination.page === pagination.totalPages ? "#ccc" : "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>Next →</button>
+          </div>
         )}
       </div>
     </div>

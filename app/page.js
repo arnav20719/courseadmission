@@ -1,311 +1,307 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 
 export default function Homepage() {
-  const [scrolled, setScrolled] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    course: "",
+    interestedCollege: "",
+    budget: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => setScrolled(window.scrollY > 50));
-    return () => window.removeEventListener("scroll", () => setScrolled(window.scrollY > 50));
-  }, []);
-
-  const streams = [
-    { name: "Engineering", icon: "⚙️", color: "#3b82f6", count: "5000+ Colleges", link: "/colleges?stream=Engineering" },
-    { name: "B.Tech", icon: "💻", color: "#06b6d4", count: "4000+ Colleges", link: "/colleges?stream=B.Tech" },
-    { name: "Medical", icon: "🏥", color: "#10b981", count: "1200+ Colleges", link: "/colleges?stream=Medical" },
-    { name: "Agriculture", icon: "🌾", color: "#84cc16", count: "800+ Colleges", link: "/colleges?stream=Agriculture" },
-    { name: "Pharmacy", icon: "💊", color: "#ef4444", count: "1500+ Colleges", link: "/colleges?stream=Pharmacy" },
-    { name: "BBA", icon: "📈", color: "#f59e0b", count: "3000+ Colleges", link: "/colleges?stream=BBA" },
-    { name: "BCA", icon: "🖥️", color: "#8b5cf6", count: "2500+ Colleges", link: "/colleges?stream=BCA" },
-    { name: "MBA", icon: "🎯", color: "#ff6b35", count: "5000+ Colleges", link: "/colleges?stream=MBA" },
-    { name: "B.Sc Nursing", icon: "👩‍⚕️", color: "#ec4899", count: "1000+ Colleges", link: "/colleges?stream=Nursing" },
+  const courses = [
+    "Engineering (B.Tech)",
+    "Medical (MBBS)",
+    "Management (MBA/BBA)",
+    "Computer Applications (BCA/MCA)",
+    "Commerce (B.Com/M.Com)",
+    "Arts (BA/MA)",
+    "Law (LL.B)",
+    "Pharmacy (B.Pharm)",
+    "Agriculture (B.Sc)",
+    "Nursing (B.Sc)",
+    "Architecture (B.Arch)",
   ];
 
-  const topColleges = [
-    { name: "IIT Bombay", rank: "NIRF #3", fees: "₹2.2L/year", placement: "₹25 LPA", stream: "Engineering" },
-    { name: "IIT Delhi", rank: "NIRF #2", fees: "₹2.2L/year", placement: "₹30 LPA", stream: "Engineering" },
-    { name: "IIT Madras", rank: "NIRF #1", fees: "₹2.2L/year", placement: "₹28 LPA", stream: "Engineering" },
-    { name: "AIIMS Delhi", rank: "NIRF #1", fees: "₹7.7K/year", placement: "₹15 LPA", stream: "Medical" },
-    { name: "IIM Ahmedabad", rank: "NIRF #1", fees: "₹23L/year", placement: "₹32 LPA", stream: "Management" },
-    { name: "NLSIU Bangalore", rank: "Law #1", fees: "₹2L/year", placement: "₹18 LPA", stream: "Law" },
+  const budgets = [
+    "Under ₹50,000/year",
+    "₹50,000 - ₹1,00,000/year",
+    "₹1,00,000 - ₹2,00,000/year",
+    "₹2,00,000 - ₹5,00,000/year",
+    "Above ₹5,00,000/year",
+    "Not sure / Any budget",
   ];
 
-  const upcomingExams = [
-    { name: "JEE Main 2026", date: "Jan 15 - Apr 15, 2026", registrations: "Open", color: "#ff6b35" },
-    { name: "NEET 2026", date: "May 5, 2026", registrations: "Coming Soon", color: "#10b981" },
-    { name: "CAT 2026", date: "Nov 24, 2026", registrations: "Expected Soon", color: "#3b82f6" },
-    { name: "BITSAT 2026", date: "May 20, 2026", registrations: "Open", color: "#8b5cf6" },
-  ];
-
-  const biharScheme = {
-    title: "Bihar Student Credit Card",
-    description: "Up to ₹4 lakhs education loan at 4% interest",
-    features: ["No Collateral", "No Processing Fee", "Repayment after course + 1 year"],
-    link: "/bihar-credit-card",
-    icon: "🎓",
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const articles = [
-    { title: "Top 10 Engineering Colleges in India 2026", reads: "15K reads", link: "/articles/top-engineering-colleges" },
-    { title: "NEET 2026: Exam Pattern, Syllabus, Preparation Tips", reads: "22K reads", link: "/articles/neet-2026" },
-    { title: "How to Apply for Bihar Student Credit Card?", reads: "8K reads", link: "/bihar-credit-card" },
-    { title: "MBA vs MTech: Which is Better for Career?", reads: "12K reads", link: "/articles/mba-vs-mtech" },
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          stream: formData.course,
+          message: `Interested College: ${formData.interestedCollege || "Not specified"}, Budget: ${formData.budget || "Not specified"}`,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: "", phone: "", course: "", interestedCollege: "", budget: "" });
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Network error. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <div>
-      {/* Hero Section with Large Search */}
+    <>
+      {/* Banner */}
+      <div style={{
+        background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+        color: "white",
+        textAlign: "center",
+        padding: "12px",
+        fontSize: "14px",
+        fontWeight: "600",
+      }}>
+        🔥 2026 Admissions Going On! Limited Seats Available. Apply Now for Free Counseling 🔥
+      </div>
+
+      {/* Hero Section */}
       <div style={{
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        padding: scrolled ? "40px 20px" : "60px 20px",
-        transition: "all 0.3s",
-        textAlign: "center",
-        color: "white",
+        padding: "60px 20px",
       }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: "clamp(32px, 6vw, 48px)", fontWeight: "bold", marginBottom: "15px" }}>
-            Find the right college after 12th, UG, or PG
-          </h1>
-          <p style={{ fontSize: "16px", marginBottom: "30px", opacity: 0.9 }}>
-            Search colleges, compare fees, check exams, and get counselling for admission
-          </p>
-          
-          <div style={{ position: "relative", maxWidth: "600px", margin: "0 auto" }}>
-            <input
-              type="text"
-              placeholder="Search for colleges, courses, exams..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter" && searchTerm.trim()) {
-                  window.location.href = `/colleges?search=${encodeURIComponent(searchTerm)}`;
-                }
-              }}
-              style={{
-                width: "100%",
-                padding: "16px 20px",
-                fontSize: "16px",
-                borderRadius: "50px",
-                border: "none",
-                outline: "none",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-                color: "#333",
-              }}
-            />
-            <button
-              onClick={() => {
-                if (searchTerm.trim()) {
-                  window.location.href = `/colleges?search=${encodeURIComponent(searchTerm)}`;
-                }
-              }}
-              style={{
-                position: "absolute",
-                right: "5px",
-                top: "5px",
-                bottom: "5px",
-                padding: "0 25px",
-                background: "#ff6b35",
-                color: "white",
-                border: "none",
-                borderRadius: "50px",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Search
-            </button>
+        <div style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "60px",
+          alignItems: "center",
+        }}>
+          <div style={{ color: "white" }}>
+            <h1 style={{
+              fontSize: "42px",
+              fontWeight: "700",
+              marginBottom: "20px",
+              lineHeight: "1.2",
+            }}>
+              Your Dream College <br/>Starts Here
+            </h1>
+            <div style={{ display: "flex", gap: "12px", marginBottom: "24px", flexWrap: "wrap" }}>
+              <span style={{ background: "rgba(255,255,255,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "13px" }}>💰 0 Investment</span>
+              <span style={{ background: "rgba(255,255,255,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "13px" }}>🎯 100% Free</span>
+              <span style={{ background: "rgba(255,255,255,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "13px" }}>📞 Expert Guidance</span>
+            </div>
+            <p style={{ fontSize: "16px", marginBottom: "32px", opacity: 0.9, lineHeight: "1.6" }}>
+              Get personalized guidance from expert counselors. Find the perfect college that matches your profile and budget.
+            </p>
+            <div style={{ display: "flex", gap: "40px", borderTop: "1px solid rgba(255,255,255,0.2)", paddingTop: "32px" }}>
+              <div><div style={{ fontSize: "28px", fontWeight: "700" }}>10,000+</div><div style={{ fontSize: "13px", opacity: 0.8 }}>Students Helped</div></div>
+              <div><div style={{ fontSize: "28px", fontWeight: "700" }}>1,200+</div><div style={{ fontSize: "13px", opacity: 0.8 }}>Colleges Listed</div></div>
+              <div><div style={{ fontSize: "28px", fontWeight: "700" }}>100%</div><div style={{ fontSize: "13px", opacity: 0.8 }}>Free Guidance</div></div>
+            </div>
+          </div>
+
+          <div style={{
+            background: "white",
+            borderRadius: "24px",
+            padding: "36px",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+          }}>
+            <div style={{ textAlign: "center", marginBottom: "24px" }}>
+              <div style={{
+                width: "60px",
+                height: "60px",
+                background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+                borderRadius: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+                fontSize: "28px",
+              }}>🎓</div>
+              <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a2e", marginBottom: "8px" }}>Get Free Admission Guidance</h2>
+              <p style={{ color: "#6b7280", fontSize: "14px" }}>Fill the form. Counselor will call you within 24 hours.</p>
+            </div>
+
+            {submitted ? (
+              <div style={{ background: "#dcfce7", color: "#166534", padding: "24px", borderRadius: "16px", textAlign: "center" }}>
+                <div style={{ fontSize: "48px", marginBottom: "12px" }}>✅</div>
+                <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "8px" }}>Thank You!</h3>
+                <p>Our counselor will contact you soon.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <input type="text" name="name" placeholder="Full Name *" required value={formData.name} onChange={handleChange} style={{ width: "100%", padding: "14px 16px", marginBottom: "16px", border: "1px solid #e2e8f0", borderRadius: "12px", fontSize: "15px" }} />
+                <input type="tel" name="phone" placeholder="Mobile Number *" required value={formData.phone} onChange={handleChange} style={{ width: "100%", padding: "14px 16px", marginBottom: "16px", border: "1px solid #e2e8f0", borderRadius: "12px", fontSize: "15px" }} />
+                <select name="course" required value={formData.course} onChange={handleChange} style={{ width: "100%", padding: "14px 16px", marginBottom: "16px", border: "1px solid #e2e8f0", borderRadius: "12px", fontSize: "15px", background: "white" }}>
+                  <option value="">Select Course *</option>
+                  {courses.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <input type="text" name="interestedCollege" placeholder="Interested College (Optional)" value={formData.interestedCollege} onChange={handleChange} style={{ width: "100%", padding: "14px 16px", marginBottom: "16px", border: "1px solid #e2e8f0", borderRadius: "12px", fontSize: "15px" }} />
+                <select name="budget" value={formData.budget} onChange={handleChange} style={{ width: "100%", padding: "14px 16px", marginBottom: "24px", border: "1px solid #e2e8f0", borderRadius: "12px", fontSize: "15px", background: "white" }}>
+                  <option value="">Select Budget (per year)</option>
+                  {budgets.map(b => <option key={b} value={b}>{b}</option>)}
+                </select>
+                <button type="submit" disabled={submitting} style={{ width: "100%", padding: "14px", background: submitting ? "#94a3b8" : "linear-gradient(135deg, #ff6b35, #f7931e)", color: "white", border: "none", borderRadius: "12px", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+                  {submitting ? "Submitting..." : "Get Free Counseling →"}
+                </button>
+              </form>
+            )}
+            <p style={{ fontSize: "11px", color: "#9ca3af", textAlign: "center", marginTop: "16px" }}>🔒 No spam. Your data is safe with us.</p>
           </div>
         </div>
       </div>
 
-      {/* Popular Courses - Professional Colorful Cards */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "60px 20px" }}>
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <h2 style={{ fontSize: "32px", fontWeight: "bold", color: "#1a1a2e" }}>Popular Courses</h2>
-          <p style={{ color: "#666", marginTop: "10px" }}>Explore top courses that students search for the most</p>
+      {/* Popular Courses Section - PREMIUM DESIGN */}
+      <div style={{ background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "80px 20px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+            <span style={{
+              background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+              color: "white",
+              padding: "6px 20px",
+              borderRadius: "50px",
+              fontSize: "12px",
+              fontWeight: "600",
+              display: "inline-block",
+              marginBottom: "16px",
+            }}>POPULAR COURSES</span>
+            <h2 style={{ fontSize: "36px", fontWeight: "700", color: "#1a1a2e", marginBottom: "12px" }}>Explore Top Courses</h2>
+            <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "600px", margin: "0 auto" }}>With high placement records and growing demand</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "28px" }}>
+            {[
+              { name: "Engineering", icon: "⚙️", gradient: "linear-gradient(135deg, #3b82f6, #2563eb)", count: "5,000+ Colleges", bg: "linear-gradient(135deg, #eff6ff, #dbeafe)" },
+              { name: "Medical", icon: "🩺", gradient: "linear-gradient(135deg, #10b981, #059669)", count: "1,200+ Colleges", bg: "linear-gradient(135deg, #ecfdf5, #d1fae5)" },
+              { name: "Management", icon: "📈", gradient: "linear-gradient(135deg, #f59e0b, #d97706)", count: "5,000+ Colleges", bg: "linear-gradient(135deg, #fffbeb, #fef3c7)" },
+              { name: "Computer Applications", icon: "💻", gradient: "linear-gradient(135deg, #8b5cf6, #7c3aed)", count: "2,500+ Colleges", bg: "linear-gradient(135deg, #f5f3ff, #ede9fe)" },
+              { name: "Commerce", icon: "💰", gradient: "linear-gradient(135deg, #06b6d4, #0891b2)", count: "4,000+ Colleges", bg: "linear-gradient(135deg, #ecfeff, #cffafe)" },
+              { name: "Law", icon: "⚖️", gradient: "linear-gradient(135deg, #ef4444, #dc2626)", count: "800+ Colleges", bg: "linear-gradient(135deg, #fef2f2, #fee2e2)" },
+              { name: "Pharmacy", icon: "💊", gradient: "linear-gradient(135deg, #ec4899, #db2777)", count: "1,500+ Colleges", bg: "linear-gradient(135deg, #fdf2f8, #fce7f3)" },
+              { name: "Agriculture", icon: "🌾", gradient: "linear-gradient(135deg, #84cc16, #65a30d)", count: "800+ Colleges", bg: "linear-gradient(135deg, #f7fee7, #ecfccb)" },
+            ].map((course, i) => (
+              <Link key={i} href={`/colleges?stream=${course.name}`} style={{ textDecoration: "none" }}>
+                <div style={{
+                  background: course.bg,
+                  borderRadius: "24px",
+                  padding: "32px 20px",
+                  textAlign: "center",
+                  transition: "all 0.3s ease",
+                  cursor: "pointer",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                  e.currentTarget.style.boxShadow = "0 20px 30px -12px rgba(0,0,0,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}>
+                  <div style={{
+                    position: "absolute",
+                    top: "-20px",
+                    right: "-20px",
+                    width: "100px",
+                    height: "100px",
+                    background: course.gradient,
+                    borderRadius: "50%",
+                    opacity: 0.1,
+                  }} />
+                  <div style={{
+                    background: course.gradient,
+                    width: "70px",
+                    height: "70px",
+                    borderRadius: "35px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 20px",
+                    fontSize: "32px",
+                    boxShadow: "0 10px 20px -5px rgba(0,0,0,0.1)",
+                  }}>
+                    {course.icon}
+                  </div>
+                  <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>{course.name}</h3>
+                  <p style={{ fontSize: "13px", color: "#64748b", fontWeight: "500" }}>{course.count}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "24px" }}>
-          {streams.map((stream, i) => (
-            <Link key={i} href={stream.link} style={{ textDecoration: "none" }}>
-              <div style={{
-                background: `linear-gradient(135deg, ${stream.color}15 0%, ${stream.color}05 100%)`,
-                padding: "28px 20px",
+      </div>
+
+      {/* Top Colleges Section */}
+      <div style={{ background: "#ffffff", padding: "80px 20px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+            <span style={{ background: "#fef3c7", color: "#d97706", padding: "6px 20px", borderRadius: "50px", fontSize: "12px", fontWeight: "600", display: "inline-block", marginBottom: "16px" }}>TOP RANKED</span>
+            <h2 style={{ fontSize: "36px", fontWeight: "700", color: "#1a1a2e", marginBottom: "12px" }}>🏆 India's Best Colleges</h2>
+            <p style={{ fontSize: "16px", color: "#64748b" }}>Based on NIRF Rankings 2026</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+            {[
+              { name: "IIT Bombay", rank: "NIRF #3", fees: "₹2.2L/year", placement: "₹25 LPA", color: "#3b82f6" },
+              { name: "IIT Delhi", rank: "NIRF #2", fees: "₹2.2L/year", placement: "₹30 LPA", color: "#3b82f6" },
+              { name: "IIT Madras", rank: "NIRF #1", fees: "₹2.2L/year", placement: "₹28 LPA", color: "#3b82f6" },
+              { name: "AIIMS Delhi", rank: "NIRF #1", fees: "₹7.7K/year", placement: "₹15 LPA", color: "#10b981" },
+              { name: "IIM Ahmedabad", rank: "NIRF #1", fees: "₹23L/year", placement: "₹32 LPA", color: "#f59e0b" },
+              { name: "NIT Trichy", rank: "NIRF #8", fees: "₹1.5L/year", placement: "₹22 LPA", color: "#8b5cf6" },
+            ].map((college, i) => (
+              <div key={i} style={{
+                background: "white",
                 borderRadius: "20px",
-                textAlign: "center",
-                transition: "all 0.3s ease",
+                padding: "24px",
+                transition: "all 0.3s",
+                border: "1px solid #eef2ff",
                 cursor: "pointer",
-                border: `1px solid ${stream.color}30`,
-                position: "relative",
-                overflow: "hidden",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-8px)";
-                e.currentTarget.style.boxShadow = `0 20px 35px ${stream.color}40`;
-                e.currentTarget.style.border = `1px solid ${stream.color}`;
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 20px 30px -12px rgba(0,0,0,0.1)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.border = `1px solid ${stream.color}30`;
+                e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
               }}>
-                <div style={{
-                  background: `linear-gradient(135deg, ${stream.color}, ${stream.color}dd)`,
-                  width: "70px",
-                  height: "70px",
-                  borderRadius: "35px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 20px auto",
-                  boxShadow: `0 8px 20px ${stream.color}50`,
-                }}>
-                  <span style={{ fontSize: "32px" }}>{stream.icon}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#1a1a2e" }}>{college.name}</h3>
+                  <span style={{ background: college.color, color: "white", padding: "4px 14px", borderRadius: "50px", fontSize: "11px", fontWeight: "600" }}>{college.rank}</span>
                 </div>
-                <h3 style={{ fontSize: "18px", fontWeight: "bold", color: stream.color, marginBottom: "8px" }}>{stream.name}</h3>
-                <p style={{ color: "#666", fontSize: "13px", fontWeight: "500" }}>{stream.count}</p>
-                <div style={{
-                  position: "absolute",
-                  bottom: "-20px",
-                  right: "-20px",
-                  width: "80px",
-                  height: "80px",
-                  borderRadius: "50%",
-                  background: `${stream.color}10`,
-                  pointerEvents: "none",
-                }} />
+                <div style={{ display: "flex", justifyContent: "space-between", paddingTop: "16px", borderTop: "1px solid #eef2ff" }}>
+                  <p style={{ color: "#4b5563", fontSize: "14px" }}>💰 {college.fees}</p>
+                  <p style={{ color: "#4b5563", fontSize: "14px" }}>📊 {college.placement}</p>
+                </div>
               </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Top Ranked Colleges Section */}
-      <div style={{ background: "#f8f9fa", padding: "50px 20px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px", flexWrap: "wrap" }}>
-            <h2 style={{ fontSize: "28px" }}>🏆 Top Ranked Colleges</h2>
-            <Link href="/colleges" style={{ color: "#ff6b35", textDecoration: "none" }}>View All →</Link>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
-            {topColleges.map((college, i) => (
-              <Link key={i} href={`/colleges/${college.name.toLowerCase().replace(/\s+/g, "-")}`} style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: "white",
-                  padding: "20px",
-                  borderRadius: "12px",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-                  transition: "transform 0.3s",
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-3px)"}
-                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                    <h3 style={{ fontSize: "18px", color: "#1a1a2e" }}>{college.name}</h3>
-                    <span style={{ background: "#ff6b35", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{college.rank}</span>
-                  </div>
-                  <p style={{ color: "#666", fontSize: "14px", marginBottom: "5px" }}>💰 {college.fees}</p>
-                  <p style={{ color: "#666", fontSize: "14px" }}>📊 Placement: {college.placement}</p>
-                </div>
-              </Link>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Upcoming Exams + Bihar Credit Card Section */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "50px 20px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: "30px" }}>
-          
-          {/* Upcoming Exams Section */}
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h2 style={{ fontSize: "24px" }}>📝 Upcoming Exams</h2>
-              <Link href="/colleges" style={{ color: "#ff6b35", textDecoration: "none" }}>View All →</Link>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-              {upcomingExams.map((exam, i) => (
-                <div key={i} style={{
-                  background: "white",
-                  padding: "20px",
-                  borderRadius: "12px",
-                  border: "1px solid #eee",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.03)",
-                }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
-                    <h3 style={{ fontSize: "18px", color: exam.color }}>{exam.name}</h3>
-                    <span style={{
-                      background: exam.registrations === "Open" ? "#10b981" : "#f59e0b",
-                      color: "white",
-                      padding: "4px 12px",
-                      borderRadius: "20px",
-                      fontSize: "12px",
-                    }}>
-                      {exam.registrations}
-                    </span>
-                  </div>
-                  <p style={{ color: "#666", fontSize: "14px", marginTop: "10px" }}>📅 {exam.date}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bihar Credit Card Section */}
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h2 style={{ fontSize: "24px" }}>🎓 {biharScheme.title}</h2>
-              <Link href={biharScheme.link} style={{ color: "#ff6b35", textDecoration: "none" }}>Learn More →</Link>
-            </div>
-            <Link href={biharScheme.link} style={{ textDecoration: "none" }}>
-              <div style={{
-                background: "linear-gradient(135deg, #1a1a2e 0%, #2d2d5e 100%)",
-                padding: "30px",
-                borderRadius: "16px",
-                color: "white",
-              }}>
-                <div style={{ fontSize: "48px", marginBottom: "15px" }}>{biharScheme.icon}</div>
-                <h3 style={{ fontSize: "22px", marginBottom: "10px", color: "white" }}>{biharScheme.title}</h3>
-                <p style={{ marginBottom: "15px", opacity: 0.9, color: "white" }}>{biharScheme.description}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                  {biharScheme.features.map((feature, i) => (
-                    <span key={i} style={{ background: "rgba(255,255,255,0.2)", padding: "5px 12px", borderRadius: "20px", fontSize: "12px", color: "white" }}>✅ {feature}</span>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Latest Articles Section */}
-      <div style={{ background: "#f8f9fa", padding: "50px 20px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-            <h2 style={{ fontSize: "24px" }}>📰 Latest Articles</h2>
-            <Link href="/articles" style={{ color: "#ff6b35", textDecoration: "none" }}>View All →</Link>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
-            {articles.map((article, i) => (
-              <Link key={i} href={article.link} style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: "white",
-                  padding: "20px",
-                  borderRadius: "12px",
-                  transition: "transform 0.3s",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-3px)"}
-                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-                  <h3 style={{ fontSize: "16px", color: "#1a1a2e", marginBottom: "10px", lineHeight: "1.4" }}>{article.title}</h3>
-                  <p style={{ color: "#888", fontSize: "13px" }}>👁️ {article.reads}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
-    </div>
+    </>
   );
 }

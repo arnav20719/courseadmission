@@ -42,51 +42,123 @@ export default function Header() {
 
   return (
     <>
-      {/* Header Bar */}
-      <div style={{ background: "#1a1a2e", padding: "12px 20px", position: "sticky", top: 0, zIndex: 1000 }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "15px" }}>
-          
+      {/* Header */}
+      <div style={{
+        background: "#1a1a2e",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+      }}>
+        {/* Top Row */}
+        <div style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "12px 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "15px",
+          flexWrap: "wrap",
+        }}>
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}>
-            <div style={{ background: "linear-gradient(135deg, #ff6b35, #f7931e)", width: "40px", height: "40px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>🎓</div>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+            <div style={{
+              background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+              width: "40px",
+              height: "40px",
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "22px",
+            }}>🎓</div>
             <div>
-              <span style={{ fontSize: "20px", fontWeight: "bold", color: "white" }}>CourseAdmission</span>
+              <span style={{ fontSize: "18px", fontWeight: "bold", color: "white" }}>CourseAdmission</span>
               <span style={{ fontSize: "10px", display: "block", color: "#aaa" }}>RG ARNAV EDU CONSULTANCY</span>
             </div>
           </Link>
 
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: "500px", position: "relative" }}>
-            <input 
-              type="text" 
-              placeholder="Search Colleges, Courses, Exams..." 
-              style={{ width: "100%", padding: "12px 50px 12px 20px", borderRadius: "50px", border: "none", fontSize: "14px", outline: "none", background: "rgba(255,255,255,0.15)", color: "white" }} 
+          <div style={{
+            flex: 1,
+            maxWidth: "350px",
+            position: "relative",
+          }}>
+            <input
+              type="text"
+              placeholder="Search Colleges, Courses..."
+              style={{
+                width: "100%",
+                padding: "10px 45px 10px 16px",
+                borderRadius: "50px",
+                border: "none",
+                fontSize: "14px",
+                background: "rgba(255,255,255,0.15)",
+                color: "white",
+              }}
             />
-            <button style={{ position: "absolute", right: "5px", top: "5px", bottom: "5px", padding: "0 20px", background: "linear-gradient(135deg, #ff6b35, #f7931e)", color: "white", border: "none", borderRadius: "50px", fontWeight: "bold", cursor: "pointer" }}>
-              Go
-            </button>
+            <button style={{
+              position: "absolute",
+              right: "5px",
+              top: "4px",
+              bottom: "4px",
+              padding: "0 16px",
+              background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+              border: "none",
+              borderRadius: "50px",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}>Go</button>
           </div>
 
-          {/* Auth Buttons - TOP BAR */}
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          {/* Auth Buttons */}
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             {isLoggedIn ? (
               <>
-                <span style={{ color: "white", fontSize: "14px" }}>👋 Welcome, {userName}!</span>
-                <button onClick={handleLogout} style={{ background: "#dc2626", color: "white", border: "none", padding: "8px 20px", borderRadius: "25px", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}>Logout</button>
+                <span style={{ color: "white", fontSize: "13px" }}>Hi, {userName}</span>
+                <button onClick={handleLogout} style={{
+                  background: "#dc2626",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 16px",
+                  borderRadius: "40px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                }}>Logout</button>
               </>
             ) : (
               <>
-                <button onClick={() => setShowLogin(true)} style={{ background: "transparent", border: "1px solid #ff6b35", color: "#ff6b35", padding: "8px 20px", borderRadius: "25px", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}>Login</button>
-                <button onClick={() => setShowSignup(true)} style={{ background: "linear-gradient(135deg, #ff6b35, #f7931e)", color: "white", border: "none", padding: "8px 20px", borderRadius: "25px", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}>Sign Up</button>
+                <button onClick={() => setShowLogin(true)} style={{
+                  background: "transparent",
+                  border: "1px solid #ff6b35",
+                  color: "#ff6b35",
+                  padding: "6px 16px",
+                  borderRadius: "40px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                }}>Login</button>
+                <button onClick={() => setShowSignup(true)} style={{
+                  background: "linear-gradient(135deg, #ff6b35, #f7931e)",
+                  border: "none",
+                  color: "white",
+                  padding: "6px 16px",
+                  borderRadius: "40px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                }}>Sign Up</button>
               </>
             )}
           </div>
 
-          {/* Hamburger Button */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+          {/* HAMBURGER MENU BUTTON - ALWAYS VISIBLE */}
+          <button
+            onClick={() => setIsMenuOpen(true)}
             style={{
-              background: "rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.15)",
               border: "none",
               width: "44px",
               height: "44px",
@@ -96,7 +168,7 @@ export default function Header() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap: "5px"
+              gap: "5px",
             }}
           >
             <span style={{ width: "22px", height: "2.5px", background: "white", borderRadius: "2px", display: "block" }}></span>
@@ -106,49 +178,109 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div style={{ display: "flex", gap: "20px", padding: "10px 0", overflowX: "auto", whiteSpace: "nowrap", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.1)", marginTop: "10px" }}>
+        <div style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "10px 20px",
+          display: "flex",
+          gap: "24px",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+        }}>
           {menuItems.map((item, i) => (
-            <Link key={i} href={item.link} style={{ color: "white", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}>{item.name}</Link>
+            <Link key={i} href={item.link} style={{
+              color: "rgba(255,255,255,0.8)",
+              textDecoration: "none",
+              fontSize: "13px",
+              fontWeight: "500",
+              padding: "5px 0",
+            }}>
+              {item.name}
+            </Link>
           ))}
         </div>
       </div>
 
-      {/* RIGHT SIDE MENU */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <>
-          {/* Menu Panel - RIGHT SIDE */}
+          <div
+            onClick={() => setIsMenuOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "rgba(0,0,0,0.5)",
+              zIndex: 1999,
+            }}
+          />
           <div style={{
             position: "fixed",
             top: 0,
-            right: 0,
+            left: 0,
+            bottom: 0,
             width: "280px",
-            height: "100%",
             background: "white",
-            zIndex: 2001,
-            boxShadow: "-2px 0 10px rgba(0,0,0,0.2)",
-            overflowY: "auto"
+            zIndex: 2000,
+            boxShadow: "2px 0 10px rgba(0,0,0,0.2)",
+            overflowY: "auto",
           }}>
-            {/* Header */}
-            <div style={{ background: "linear-gradient(135deg, #1e3a8a, #3b82f6)", padding: "25px 20px", color: "white", textAlign: "center" }}>
+            <div style={{
+              background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
+              padding: "25px 20px",
+              color: "white",
+              textAlign: "center",
+            }}>
               <div style={{ fontSize: "40px" }}>🎓</div>
               <h3 style={{ margin: 0, fontSize: "16px" }}>CourseAdmission</h3>
               <p style={{ margin: "5px 0 0", fontSize: "10px", opacity: 0.8 }}>RG ARNAV EDU CONSULTANCY</p>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                style={{
+                  position: "absolute",
+                  top: "15px",
+                  right: "15px",
+                  background: "rgba(255,255,255,0.2)",
+                  border: "none",
+                  color: "white",
+                  fontSize: "18px",
+                  cursor: "pointer",
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "15px",
+                }}
+              >
+                ✕
+              </button>
             </div>
 
-            {/* Close Button */}
-            <button onClick={() => setIsMenuOpen(false)} style={{ position: "absolute", top: "15px", left: "15px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", width: "30px", height: "30px", borderRadius: "15px" }}>✕</button>
-
-            {/* User Info */}
             {isLoggedIn && (
               <div style={{ padding: "15px 20px", background: "#f0f9ff", borderBottom: "1px solid #e2e8f0" }}>
                 <p style={{ margin: 0, fontWeight: "bold", color: "#1e3a8a" }}>👋 Welcome, {userName}!</p>
               </div>
             )}
 
-            {/* Menu Items */}
             <div style={{ padding: "10px 0" }}>
               {menuItems.map((item, i) => (
-                <Link key={i} href={item.link} onClick={() => setIsMenuOpen(false)} style={{ display: "flex", alignItems: "center", gap: "15px", padding: "14px 20px", color: "#333", textDecoration: "none", fontSize: "15px", fontWeight: "500", borderBottom: "1px solid #f0f0f0" }}>
+                <Link
+                  key={i}
+                  href={item.link}
+                  onClick={() => setIsMenuOpen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px",
+                    padding: "14px 20px",
+                    color: "#333",
+                    textDecoration: "none",
+                    fontSize: "15px",
+                    fontWeight: "500",
+                    borderBottom: "1px solid #f0f0f0",
+                  }}
+                >
                   <span style={{ fontSize: "20px" }}>
                     {item.name === "HOME" && "🏠"}
                     {item.name === "ENGINEERING" && "🎓"}
@@ -166,77 +298,25 @@ export default function Header() {
               ))}
             </div>
 
-            {/* Auth Buttons - IN MENU (BLUE) */}
             {!isLoggedIn && (
               <div style={{ padding: "20px", borderTop: "1px solid #e2e8f0", marginTop: "10px" }}>
-                <button 
-                  onClick={() => { setShowLogin(true); setIsMenuOpen(false); }} 
-                  style={{ 
-                    width: "100%", 
-                    padding: "14px", 
-                    background: "#3b82f6", 
-                    color: "white", 
-                    border: "none", 
-                    borderRadius: "10px", 
-                    cursor: "pointer", 
-                    fontSize: "16px", 
-                    fontWeight: "bold", 
-                    marginBottom: "12px" 
-                  }}
-                >
-                  🔐 Login
-                </button>
-                <button 
-                  onClick={() => { setShowSignup(true); setIsMenuOpen(false); }} 
-                  style={{ 
-                    width: "100%", 
-                    padding: "14px", 
-                    background: "#10b981", 
-                    color: "white", 
-                    border: "none", 
-                    borderRadius: "10px", 
-                    cursor: "pointer", 
-                    fontSize: "16px", 
-                    fontWeight: "bold" 
-                  }}
-                >
-                  ✨ Sign Up
-                </button>
+                <button onClick={() => { setShowLogin(true); setIsMenuOpen(false); }} style={{ width: "100%", padding: "12px", background: "#3b82f6", color: "white", border: "none", borderRadius: "10px", cursor: "pointer", fontSize: "15px", fontWeight: "bold", marginBottom: "10px" }}>Login</button>
+                <button onClick={() => { setShowSignup(true); setIsMenuOpen(false); }} style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg, #ff6b35, #f7931e)", border: "none", color: "white", borderRadius: "10px", cursor: "pointer", fontSize: "15px", fontWeight: "bold" }}>Sign Up</button>
               </div>
             )}
 
             {isLoggedIn && (
               <div style={{ padding: "20px", borderTop: "1px solid #e2e8f0", marginTop: "10px" }}>
-                <button 
-                  onClick={() => { handleLogout(); setIsMenuOpen(false); }} 
-                  style={{ 
-                    width: "100%", 
-                    padding: "14px", 
-                    background: "#dc2626", 
-                    color: "white", 
-                    border: "none", 
-                    borderRadius: "10px", 
-                    cursor: "pointer", 
-                    fontSize: "16px", 
-                    fontWeight: "bold" 
-                  }}
-                >
-                  Logout
-                </button>
+                <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} style={{ width: "100%", padding: "12px", background: "#dc2626", border: "none", color: "white", borderRadius: "10px", cursor: "pointer", fontSize: "15px", fontWeight: "bold" }}>Logout</button>
               </div>
             )}
 
-            {/* Footer */}
-            <div style={{ padding: "20px", background: "#f8fafc" }}>
+            <div style={{ padding: "20px", background: "#f8fafc", marginTop: "20px" }}>
               <p style={{ fontSize: "12px", color: "#666", textAlign: "center", margin: 0 }}>
-                Need help? <br/>
-                📞 +91-8809976942
+                Need help? <br/>📞 +91-8809976942
               </p>
             </div>
           </div>
-
-          {/* Overlay */}
-          <div onClick={() => setIsMenuOpen(false)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 2000 }} />
         </>
       )}
 

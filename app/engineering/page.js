@@ -1,73 +1,64 @@
-"use client";
-
-import { useState, useEffect } from "react";
+// THIS PAGE LOADS INSTANTLY - NO WAITING
 import Link from "next/link";
 
-export default function EngineeringPage() {
-  const [colleges, setColleges] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/colleges")
-      .then((res) => res.json())
-      .then((data) => {
-        const engineeringColleges = data.filter(
-          (c) =>
-            c.stream &&
-            (c.stream.toLowerCase().includes("engineering") ||
-              c.name.toLowerCase().includes("iit") ||
-              c.name.toLowerCase().includes("nit") ||
-              c.name.toLowerCase().includes("bits") ||
-              c.name.toLowerCase().includes("iiit"))
-        );
-        setColleges(engineeringColleges);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div style={{ padding: "40px", textAlign: "center" }}>Loading engineering colleges...</div>;
+async function getEngineeringColleges() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL || 'http://localhost:3001'}/api/colleges?limit=2000`);
+    const data = await res.json();
+    const collegesArray = data.colleges || [];
+    
+    const engineeringColleges = collegesArray.filter((c) => {
+      const name = (c.name || "").toLowerCase();
+      const stream = (c.stream || "").toLowerCase();
+      return (
+        stream.includes("engineering") ||
+        stream.includes("b.tech") ||
+        stream.includes("btech") ||
+        name.includes("iit") ||
+        name.includes("nit") ||
+        name.includes("bits") ||
+        name.includes("engineering") ||
+        name.includes("technology")
+      );
+    });
+    
+    return engineeringColleges;
+  } catch (err) {
+    console.error("Build error:", err);
+    return [];
   }
+}
+
+export default async function EngineeringPage() {
+  const colleges = await getEngineeringColleges();
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-      <h1 style={{ fontSize: "28px", marginBottom: "10px", color: "#1e3a8a" }}>⚙️ Engineering Colleges</h1>
-      <p style={{ marginBottom: "20px", color: "#4b5563" }}>Browse {colleges.length} engineering colleges</p>
+      <h1 style={{ color: "#1e3a8a" }}>⚙️ Engineering Colleges</h1>
+      <p style={{ marginBottom: "20px", color: "#4b5563" }}>Total {colleges.length} engineering colleges</p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
-        {colleges.map((college) => (
+        {colleges.slice(0, 50).map((college) => (
           <Link key={college.id} href={`/colleges/${college.slug}`} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                border: "1px solid #e2e8f0",
-                borderRadius: "12px",
-                padding: "20px",
-                background: "white",
-                transition: "transform 0.2s",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-            >
-              <h3 style={{ fontSize: "18px", marginBottom: "8px", color: "#1e3a8a" }}>{college.name}</h3>
-              <p style={{ color: "#4b5563", marginBottom: "5px" }}>📍 {college.city}, {college.state}</p>
-              <p style={{ color: "#4b5563", marginBottom: "5px" }}>🏛️ {college.type}</p>
-              <p style={{ color: "#4b5563" }}>📚 {college.stream}</p>
-              {college.fees_ug_inr ? (
-                <p style={{ marginTop: "10px", fontWeight: "bold", color: "#1f2937" }}>
-                  💰 ₹{college.fees_ug_inr.toLocaleString()}/year
-                </p>
-              ) : (
-                <p style={{ marginTop: "10px", color: "#9ca3af" }}>Fees: Not available</p>
-              )}
+            <div style={{ border: "1px solid #ddd", borderRadius: "12px", padding: "20px", background: "white", cursor: "pointer" }}>
+              <h3 style={{ color: "#1e3a8a", marginBottom: "10px" }}>{college.name}</h3>
+              <p style={{ color: "#666", margin: "5px 0" }}>📍 {college.city}, {college.state}</p>
+              <p style={{ color: "#666", margin: "5px 0" }}>🏛️ {college.type}</p>
+              <p style={{ color: "#666", margin: "5px 0" }}>📚 {college.stream || "Engineering"}</p>
             </div>
           </Link>
         ))}
       </div>
+
+      {colleges.length > 50 && (
+        <div style={{ textAlign: "center", marginTop: "30px" }}>
+          <Link href="/colleges">
+            <button style={{ padding: "10px 24px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>
+              View All {colleges.length} Engineering Colleges →
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
