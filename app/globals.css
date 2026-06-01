@@ -11,22 +11,22 @@ body {
   line-height: 1.5;
 }
 
-/* ========== CONTAINER ========== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* ========== HEADER - DARK BACKGROUND (LIKE YOUR ORIGINAL) ========== */
-.shiksha-header {
-  background: #1a1a2e;
+/* ========== HEADER ========== */
+.header {
+  background: #0f172a;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  border-bottom: 1px solid #1e293b;
 }
 
-.shiksha-header-top {
+.header-top {
   max-width: 1200px;
   margin: 0 auto;
   padding: 12px 20px;
@@ -34,235 +34,303 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  flex-wrap: wrap;
 }
 
-.shiksha-logo {
+/* Logo */
+.logo {
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
-.shiksha-logo-icon {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+.logo-icon {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
 }
 
-.shiksha-logo-text {
+.logo-text {
   font-size: 18px;
   font-weight: 700;
   color: white;
+  letter-spacing: -0.3px;
 }
 
-.shiksha-logo-sub {
-  font-size: 10px;
-  color: #aaa;
+.logo-sub {
+  font-size: 9px;
+  color: #94a3b8;
   display: block;
 }
 
-.shiksha-search {
+/* Search Bar */
+.search-bar {
   flex: 1;
-  max-width: 400px;
+  max-width: 320px;
   position: relative;
 }
 
-.shiksha-search input {
+.search-bar input {
   width: 100%;
-  padding: 12px 50px 12px 18px;
+  padding: 10px 45px 10px 16px;
   border: none;
-  border-radius: 50px;
-  font-size: 14px;
-  background: rgba(255,255,255,0.15);
+  border-radius: 30px;
+  font-size: 13px;
+  background: #1e293b;
   color: white;
 }
 
-.shiksha-search input::placeholder {
-  color: rgba(255,255,255,0.6);
+.search-bar input::placeholder {
+  color: #64748b;
 }
 
-.shiksha-search input:focus {
-  outline: none;
-  background: rgba(255,255,255,0.2);
-}
-
-.shiksha-search button {
+.search-bar button {
   position: absolute;
   right: 5px;
-  top: 5px;
-  bottom: 5px;
-  padding: 0 20px;
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  top: 4px;
+  bottom: 4px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
   border: none;
-  border-radius: 50px;
+  border-radius: 30px;
   color: white;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.shiksha-auth {
+/* Auth Buttons */
+.auth-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  align-items: center;
 }
 
-.shiksha-login {
+.btn-login {
   background: transparent;
-  border: 1px solid #ff6b35;
-  color: #ff6b35;
-  padding: 8px 20px;
-  border-radius: 40px;
-  font-size: 14px;
+  border: 1px solid #f97316;
+  color: #f97316;
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.shiksha-signup {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+.btn-login:hover {
+  background: #f97316;
+  color: white;
+}
+
+.btn-signup {
+  background: linear-gradient(135deg, #f97316, #ea580c);
   border: none;
   color: white;
-  padding: 8px 20px;
-  border-radius: 40px;
-  font-size: 14px;
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
 }
 
-/* Desktop Navigation */
-.shiksha-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  gap: 28px;
-  overflow-x: auto;
-  white-space: nowrap;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  padding: 10px 20px;
-}
-
-.shiksha-nav a {
-  color: rgba(255,255,255,0.8);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 5px 0;
-}
-
-.shiksha-nav a:hover {
-  color: #ff6b35;
-}
-
-/* Mobile Menu Button */
-.shiksha-menu-btn {
-  display: none;
-  background: rgba(255,255,255,0.1);
+/* Hamburger Button */
+.hamburger-btn {
+  background: rgba(255,255,255,0.08);
   border: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  cursor: pointer;
+  gap: 4px;
 }
 
-.shiksha-menu-btn span {
-  width: 22px;
+.hamburger-btn span {
+  width: 20px;
   height: 2px;
   background: white;
   border-radius: 2px;
+  display: block;
 }
 
+/* Desktop Navigation */
+.desktop-nav {
+  border-top: 1px solid #1e293b;
+  padding: 8px 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.desktop-nav-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.desktop-nav-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+
+.desktop-nav-links a:hover {
+  color: #f97316;
+}
+
+/* Mobile Navigation Links */
+.mobile-nav-links {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+}
+
+.mobile-nav-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.mobile-nav-links a:hover {
+  color: #f97316;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Mobile view (max-width: 768px) */
 @media (max-width: 768px) {
-  .shiksha-auth {
-    display: none;
+  .search-bar {
+    display: none !important;
   }
   
-  .shiksha-nav {
-    display: none;
+  .auth-buttons {
+    display: flex !important;
+    gap: 8px !important;
   }
   
-  .shiksha-menu-btn {
-    display: flex;
+  .btn-login, .btn-signup {
+    padding: 4px 12px !important;
+    font-size: 12px !important;
   }
   
-  .shiksha-search {
-    max-width: none;
-    width: 100%;
-    order: 3;
+  .hamburger-btn {
+    display: flex !important;
+  }
+  
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .mobile-nav-links {
+    display: flex !important;
+  }
+  
+  .container {
+    padding: 0 16px !important;
+  }
+  
+  .header-top {
+    padding: 10px 16px !important;
   }
 }
 
-/* Mobile Slide Menu */
-.shiksha-mobile-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 280px;
-  background: white;
-  z-index: 1000;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  overflow-y: auto;
-}
-
-.shiksha-mobile-menu.open {
-  transform: translateX(0);
-}
-
-.shiksha-mobile-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 999;
+/* Laptop view (min-width: 769px) */
+@media (min-width: 769px) {
+  .search-bar {
+    display: block !important;
+  }
+  
+  .auth-buttons {
+    display: flex !important;
+  }
+  
+  .desktop-nav {
+    display: block !important;
+  }
+  
+  .hamburger-btn {
+    display: flex !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+  
+  .hamburger-btn span {
+    width: 22px;
+    height: 2.5px;
+  }
+  
+  .mobile-nav-links {
+    display: none !important;
+  }
 }
 
 /* ========== BANNER ========== */
-.shiksha-banner {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+.animated-banner {
+  background: linear-gradient(135deg, #f97316, #ea580c);
   color: white;
   text-align: center;
   padding: 12px;
+}
+
+.banner-text {
   font-size: 14px;
-  font-weight: 600;
-}
-
-/* ========== HERO SECTION ========== */
-.shiksha-hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 60px 20px;
-}
-
-.shiksha-hero-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .shiksha-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .banner-text {
+    font-size: 11px;
   }
 }
 
-.shiksha-hero h1 {
-  font-size: 42px;
+/* ========== HERO SECTION ========== */
+.hero {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding: 60px 20px;
+}
+
+.hero-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 769px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+}
+
+.hero h1 {
+  font-size: 38px;
   font-weight: 700;
   color: white;
   margin-bottom: 20px;
@@ -270,345 +338,377 @@ body {
 }
 
 @media (max-width: 768px) {
-  .shiksha-hero h1 {
-    font-size: 32px;
+  .hero h1 {
+    font-size: 28px;
+  }
+  .hero {
+    padding: 40px 16px;
   }
 }
 
-.shiksha-hero-tags {
+.hero-tags {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
-.shiksha-tag {
-  background: rgba(255,255,255,0.2);
+.hero-tag {
+  background: rgba(255,255,255,0.15);
   padding: 6px 16px;
-  border-radius: 50px;
+  border-radius: 30px;
   font-size: 13px;
   font-weight: 500;
   color: white;
 }
 
-.shiksha-hero p {
-  font-size: 16px;
+.hero p {
+  font-size: 15px;
   color: rgba(255,255,255,0.9);
-  margin-bottom: 32px;
+  margin-bottom: 30px;
   line-height: 1.6;
 }
 
-.shiksha-stats {
+.hero-stats {
   display: flex;
-  gap: 40px;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 32px;
+  gap: 30px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 25px;
 }
 
-.shiksha-stat-number {
-  font-size: 28px;
+.hero-stat-number {
+  font-size: 26px;
   font-weight: 700;
   color: white;
 }
 
-.shiksha-stat-label {
-  font-size: 13px;
-  color: rgba(255,255,255,0.8);
+.hero-stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+@media (max-width: 768px) {
+  .hero-stat-number {
+    font-size: 20px;
+  }
+  .hero-stats {
+    gap: 20px;
+  }
 }
 
 /* ========== FORM CARD ========== */
-.shiksha-form-card {
+.form-card {
   background: white;
-  border-radius: 24px;
-  padding: 36px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.1);
 }
 
-.shiksha-form-card h2 {
-  font-size: 24px;
+.form-card h2 {
+  font-size: 22px;
   font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 8px;
+  color: #0f172a;
   text-align: center;
+  margin-bottom: 6px;
 }
 
-.shiksha-form-card p {
-  font-size: 14px;
-  color: #6b7280;
+.form-card p {
+  font-size: 13px;
+  color: #64748b;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-.shiksha-form-group {
-  margin-bottom: 16px;
+.form-group {
+  margin-bottom: 14px;
 }
 
-.shiksha-form-group input,
-.shiksha-form-group select {
+.form-group input,
+.form-group select {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   font-size: 14px;
   background: white;
 }
 
-.shiksha-form-group input:focus,
-.shiksha-form-group select:focus {
+.form-group input:focus,
+.form-group select:focus {
   outline: none;
-  border-color: #ff6b35;
+  border-color: #f97316;
 }
 
-.shiksha-submit-btn {
+.form-submit {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  padding: 12px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: opacity 0.2s;
 }
 
-.shiksha-submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(255,107,53,0.3);
-}
-
-/* ========== SECTIONS ========== */
-.shiksha-section {
-  padding: 60px 20px;
-}
-
-.shiksha-section-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.shiksha-section-tag {
-  font-size: 13px;
-  font-weight: 600;
-  color: #ff6b35;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.shiksha-section-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 12px;
+.form-submit:hover {
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
-  .shiksha-section-title {
-    font-size: 24px;
+  .form-card {
+    padding: 20px;
+  }
+  .form-card h2 {
+    font-size: 18px;
   }
 }
 
-.shiksha-section-subtitle {
-  font-size: 16px;
-  color: #6b7280;
+/* ========== SECTIONS ========== */
+.section {
+  padding: 50px 20px;
 }
 
-/* Course Cards - LARGER AND READABLE */
-.shiksha-courses-grid {
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 35px 16px;
+  }
+  .section-title {
+    font-size: 22px;
+  }
+}
+
+/* COURSES GRID */
+.courses-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 16px;
 }
 
-@media (max-width: 1024px) {
-  .shiksha-courses-grid {
+@media (max-width: 640px) {
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 641px) and (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .courses-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1025px) {
+  .courses-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.course-card {
+  background: white;
+  padding: 24px 12px;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #e2e8f0;
+  text-decoration: none;
+  display: block;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border-color: #f97316;
+}
+
+.course-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+}
+
+.course-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #0f172a;
+}
+
+.course-count {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* COLLEGES GRID */
+.colleges-grid {
+  display: grid;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .colleges-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .colleges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1025px) {
+  .colleges-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 640px) {
-  .shiksha-courses-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.shiksha-course-card {
+.college-card {
   background: white;
-  border-radius: 20px;
-  padding: 32px 20px;
-  text-align: center;
-  transition: all 0.3s;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid #eef2ff;
-}
-
-.shiksha-course-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
-  border-color: #ff6b35;
-}
-
-.shiksha-course-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  font-size: 34px;
-}
-
-.shiksha-course-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #1a1a2e;
-}
-
-.shiksha-course-count {
-  font-size: 13px;
-  color: #6b7280;
-}
-
-/* Top Colleges Grid */
-.shiksha-colleges-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-@media (max-width: 768px) {
-  .shiksha-colleges-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.shiksha-college-card {
-  background: white;
+  padding: 20px;
   border-radius: 16px;
-  padding: 24px;
-  transition: all 0.2s;
   cursor: pointer;
-  border: 1px solid #eef2ff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+  border: 1px solid #e2e8f0;
 }
 
-.shiksha-college-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+.college-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  border-color: #f97316;
 }
 
-.shiksha-college-header {
+.college-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.shiksha-college-name {
-  font-size: 17px;
+.college-name {
+  font-size: 16px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #0f172a;
 }
 
-.shiksha-college-rank {
-  background: #fef3c7;
-  color: #d97706;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 11px;
+.college-rank {
+  padding: 3px 10px;
+  border-radius: 30px;
+  font-size: 10px;
   font-weight: 600;
-}
-
-.shiksha-college-fees {
-  font-size: 14px;
-  color: #4b5563;
-  margin-bottom: 6px;
-}
-
-.shiksha-college-placement {
-  font-size: 14px;
-  color: #4b5563;
-}
-
-/* Gray Background Section */
-.bg-gray {
-  background: #f8fafc;
-}
-
-/* Footer */
-.shiksha-footer {
-  background: #1a1a2e;
   color: white;
-  padding: 48px 20px 24px;
-  margin-top: 60px;
 }
 
-.shiksha-footer-grid {
+.college-fees, .college-placement {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 6px;
+}
+
+/* FOOTER */
+.footer {
+  background: #0f172a;
+  color: white;
+  padding: 40px 20px 24px;
+  margin-top: 50px;
+}
+
+.footer-grid {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
 }
 
-@media (max-width: 768px) {
-  .shiksha-footer-grid {
+@media (max-width: 640px) {
+  .footer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@media (min-width: 641px) {
+  .footer-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
 
-.shiksha-footer h4 {
-  font-size: 16px;
+.footer h4 {
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 16px;
-  color: white;
+  margin-bottom: 14px;
+  color: #f97316;
 }
 
-.shiksha-footer a {
-  color: #9ca3af;
+.footer a {
+  color: #94a3b8;
   text-decoration: none;
-  font-size: 13px;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.shiksha-footer a:hover {
-  color: #ff6b35;
-}
-
-.shiksha-footer-bottom {
-  max-width: 1200px;
-  margin: 32px auto 0;
-  padding-top: 24px;
-  border-top: 1px solid #333;
-  text-align: center;
   font-size: 12px;
-  color: #9ca3af;
+  display: block;
+  margin-bottom: 8px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .shiksha-course-card {
-    padding: 20px 12px;
-  }
-  
-  .shiksha-course-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-  
-  .shiksha-course-title {
-    font-size: 14px;
-  }
-  
-  .shiksha-course-count {
-    font-size: 11px;
-  }
+.footer a:hover {
+  color: #f97316;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 30px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid #1e293b;
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* CHATBOT */
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

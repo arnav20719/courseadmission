@@ -57,70 +57,65 @@ function Header() {
 
   return (
     <>
-      <div style={{ background: "#1a1a2e", position: "sticky", top: 0, zIndex: 1000 }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "15px", flexWrap: "wrap" }}>
+      <div className="header">
+        <div className="header-top">
           {/* Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-            <div style={{ background: "linear-gradient(135deg, #ff6b35, #f7931e)", width: "40px", height: "40px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>🎓</div>
+          <Link href="/" className="logo">
+            <div className="logo-icon">🎓</div>
             <div>
-              <span style={{ fontSize: "18px", fontWeight: "bold", color: "white" }}>CourseAdmission</span>
-              <span style={{ fontSize: "10px", display: "block", color: "#aaa" }}>RG ARNAV EDU CONSULTANCY</span>
+              <span className="logo-text">CourseAdmission</span>
+              <span className="logo-sub">RG ARNAV EDU CONSULTANCY</span>
             </div>
           </Link>
 
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: "350px", position: "relative" }}>
-            <input type="text" placeholder="Search Colleges, Courses..." style={{ width: "100%", padding: "10px 45px 10px 16px", borderRadius: "50px", border: "none", fontSize: "14px", background: "rgba(255,255,255,0.15)", color: "white" }} />
-            <button style={{ position: "absolute", right: "5px", top: "4px", bottom: "4px", padding: "0 16px", background: "linear-gradient(135deg, #ff6b35, #f7931e)", border: "none", borderRadius: "50px", color: "white", fontWeight: "bold", cursor: "pointer" }}>Go</button>
+          <div className="search-bar">
+            <input type="text" placeholder="Search Colleges, Courses..." />
+            <button>Go</button>
           </div>
 
           {/* Auth Buttons */}
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div className="auth-buttons">
             {isLoggedIn ? (
               <>
                 <span style={{ color: "white", fontSize: "13px" }}>Hi, {userName}</span>
-                <button onClick={handleLogout} style={{ background: "#dc2626", color: "white", border: "none", padding: "6px 16px", borderRadius: "40px", cursor: "pointer", fontSize: "13px", fontWeight: "500" }}>Logout</button>
+                <button onClick={handleLogout} className="btn-login" style={{ background: "#dc2626", color: "white", border: "none" }}>Logout</button>
               </>
             ) : (
               <>
-                <button onClick={() => setShowLogin(true)} style={{ background: "transparent", border: "1px solid #ff6b35", color: "#ff6b35", padding: "6px 16px", borderRadius: "40px", cursor: "pointer", fontSize: "13px", fontWeight: "500" }}>Login</button>
-                <button onClick={() => setShowSignup(true)} style={{ background: "linear-gradient(135deg, #ff6b35, #f7931e)", border: "none", color: "white", padding: "6px 16px", borderRadius: "40px", cursor: "pointer", fontSize: "13px", fontWeight: "500" }}>Sign Up</button>
+                <button onClick={() => setShowLogin(true)} className="btn-login">Login</button>
+                <button onClick={() => setShowSignup(true)} className="btn-signup">Sign Up</button>
               </>
             )}
           </div>
 
-          {/* HAMBURGER MENU BUTTON */}
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              border: "none",
-              width: "44px",
-              height: "44px",
-              borderRadius: "10px",
-              cursor: "pointer",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "5px",
-            }}
-          >
-            <span style={{ width: "22px", height: "2.5px", background: "white", borderRadius: "2px", display: "block" }}></span>
-            <span style={{ width: "18px", height: "2.5px", background: "white", borderRadius: "2px", display: "block" }}></span>
-            <span style={{ width: "22px", height: "2.5px", background: "white", borderRadius: "2px", display: "block" }}></span>
+          {/* Hamburger Menu Button */}
+          <button className="hamburger-btn" onClick={() => setIsMenuOpen(true)}>
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
 
-        {/* Desktop Navigation */}
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "10px 20px", display: "flex", gap: "24px", overflowX: "auto", whiteSpace: "nowrap", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-          {menuItems.map((item, i) => (
-            <Link key={i} href={item.link} style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: "13px", fontWeight: "500", padding: "5px 0" }}>{item.name}</Link>
-          ))}
+        {/* Desktop Navigation - Full menu (Laptop only) */}
+        <div className="desktop-nav">
+          <div className="desktop-nav-links">
+            {menuItems.map((item, i) => (
+              <Link key={i} href={item.link}>{item.name}</Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Navigation Links - Selected links only (Mobile only) */}
+        <div className="mobile-nav-links">
+          <Link href="/engineering">ENGINEERING</Link>
+          <Link href="/medical">MEDICAL</Link>
+          <Link href="/colleges">COLLEGES</Link>
+          <Link href="/bihar-credit-card">BIHAR CC</Link>
         </div>
       </div>
 
-      {/* MOBILE SLIDE MENU - OPENS FROM RIGHT SIDE */}
+      {/* Mobile Slide Menu */}
       {isMenuOpen && (
         <>
           <div onClick={() => setIsMenuOpen(false)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 1999 }} />
@@ -210,88 +205,49 @@ function Header() {
   );
 }
 
-// ========== FOOTER COMPONENT - COMPLETE WITH ALL MISSING ITEMS ==========
+// ========== FOOTER COMPONENT ==========
 function Footer() {
   return (
-    <footer style={{ background: "#1a1a2e", color: "white", padding: "50px 20px 20px", marginTop: "60px" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "35px" }}>
-        
-        {/* Column 1 - Resources */}
+    <footer className="footer">
+      <div className="footer-grid">
         <div>
-          <h3 style={{ color: "#ff6b35", marginBottom: "18px", fontSize: "18px" }}>📚 Resources</h3>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ marginBottom: "10px" }}><Link href="/careers-after-12th" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Careers after 12th</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/courses-after-12th" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Courses After 12th</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/ask-question" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Ask a Question</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/write-review" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>✍️ Write a college review</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/updates" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Important Updates</Link></li>
-          </ul>
+          <h4>📚 Resources</h4>
+          <Link href="/careers-after-12th">Careers after 12th</Link>
+          <Link href="/courses-after-12th">Courses After 12th</Link>
+          <Link href="/ask-question">Ask a Question</Link>
+          <Link href="/write-review">✍️ Write a college review</Link>
         </div>
-
-        {/* Column 2 - Important Updates / Exams */}
         <div>
-          <h3 style={{ color: "#ff6b35", marginBottom: "18px", fontSize: "18px" }}>📝 Important Updates</h3>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ marginBottom: "10px" }}><Link href="/neet-2026" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>NEET 2026</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/cat-2026" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>CAT 2026</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/jee-main-2026" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>JEE Main 2026</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/bitsat-2026" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>BITSAT 2026</Link></li>
-          </ul>
+          <h4>📝 Important Updates</h4>
+          <Link href="/neet-2026">NEET 2026</Link>
+          <Link href="/cat-2026">CAT 2026</Link>
+          <Link href="/jee-main-2026">JEE Main 2026</Link>
+          <Link href="/bitsat-2026">BITSAT 2026</Link>
         </div>
-
-        {/* Column 3 - Bihar Credit Card */}
         <div>
-          <h3 style={{ color: "#ff6b35", marginBottom: "18px", fontSize: "18px" }}>💰 Bihar Credit Card</h3>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ marginBottom: "10px" }}><Link href="/bihar-credit-card" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Scheme Details</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/bihar-credit-card" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Eligibility</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/bihar-credit-card" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Apply Online</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/bihar-credit-card" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Documents Required</Link></li>
-          </ul>
+          <h4>💰 Bihar Credit Card</h4>
+          <Link href="/bihar-credit-card">Scheme Details</Link>
+          <Link href="/bihar-credit-card">Eligibility</Link>
+          <Link href="/bihar-credit-card">Apply Online</Link>
+          <Link href="/bihar-credit-card">Documents Required</Link>
         </div>
-
-        {/* Column 4 - About Us */}
         <div>
-          <h3 style={{ color: "#ff6b35", marginBottom: "18px", fontSize: "18px" }}>🏢 About Us</h3>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ marginBottom: "10px" }}><Link href="/about-us" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>About Us</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/contact-us" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Contact Us</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/privacy-policy" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Privacy Policy</Link></li>
-            <li style={{ marginBottom: "10px" }}><Link href="/terms-of-use" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px" }}>Terms of Use</Link></li>
-          </ul>
+          <h4>🏢 About Us</h4>
+          <Link href="/about-us">About Us</Link>
+          <Link href="/contact-us">Contact Us</Link>
+          <Link href="/privacy-policy">Privacy Policy</Link>
+          <Link href="/terms-of-use">Terms of Use</Link>
         </div>
-
-        {/* Column 5 - Contact */}
         <div>
-          <h3 style={{ color: "#ff6b35", marginBottom: "18px", fontSize: "18px" }}>📞 Contact</h3>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ marginBottom: "10px" }}>
-              <a href="tel:+918809976942" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                📞 +91-8809976942
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a href="https://wa.me/918809976942" target="_blank" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                📱 WhatsApp: 8809976942
-              </a>
-            </li>
-            <li style={{ marginBottom: "10px" }}>
-              <a href="mailto:rgarnaveducons@gmail.com" style={{ color: "#cbd5e1", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                ✉️ rgarnaveducons@gmail.com
-              </a>
-            </li>
-          </ul>
+          <h4>📞 Contact</h4>
+          <a href="tel:+918809976942">📞 +91-8809976942</a>
+          <a href="https://wa.me/918809976942" target="_blank">📱 WhatsApp: 8809976942</a>
+          <a href="mailto:rgarnaveducons@gmail.com">✉️ rgarnaveducons@gmail.com</a>
         </div>
       </div>
-
-      {/* Bottom Bar */}
-      <div style={{ textAlign: "center", marginTop: "40px", paddingTop: "20px", borderTop: "1px solid #333" }}>
-        <p style={{ color: "#cbd5e1", fontSize: "13px", marginBottom: "8px" }}>
-          © {new Date().getFullYear()} CourseAdmission - RG ARNAV EDU CONSULTANCY. All rights reserved.
-        </p>
-        <p style={{ color: "#9ca3af", fontSize: "12px", marginTop: "8px" }}>
-          Helping students find the right college since 2024 | Admission guidance for 50+ courses | Trusted by 1,000+ students
-        </p>
+      <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} CourseAdmission - RG ARNAV EDU CONSULTANCY. All rights reserved.</p>
+        <p style={{ marginTop: "8px", fontSize: "11px" }}>Helping students find the right college since 2024 | Trusted by 1,000+ students</p>
       </div>
     </footer>
   );
@@ -300,10 +256,10 @@ function Footer() {
 // ========== ROOT LAYOUT ==========
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Header />
-        <main>{children}</main>
+        <main className="container">{children}</main>
         <Footer />
         <FaqChatbot />
         <UniversalPopup />
